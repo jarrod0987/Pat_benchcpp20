@@ -1,5 +1,4 @@
 #include<iostream>
-#include<chrono>
 #include<random>
 #include<functional>
 #include<algorithm>
@@ -33,8 +32,8 @@ export string hill_climb(string cipher_text)
 	string best_decrypt, current_decrypt, best_key;
 
 	// Setting up RNG.
-	auto seed{ chrono::system_clock::now().time_since_epoch().count() };
-	default_random_engine re{ default_random_engine((unsigned int)seed) };
+	random_device rd;
+	default_random_engine re(rd());
 	uniform_int_distribution<int> dist_a(0, 25);
 	uniform_real_distribution<double> dist_b(0.000001, 1);
 	auto twentyfive = bind(dist_a, re);
@@ -56,7 +55,7 @@ export string hill_climb(string cipher_text)
 		inner_count = 0;
 		double best_score = -100000.0;
 
-		while (inner_count < 1000)//How many times to swap 2 random letters.
+		while (inner_count < 500)//How many times to swap 2 random letters.
 		{
 			new_key = old_key;
 			inner_count++;
@@ -64,7 +63,7 @@ export string hill_climb(string cipher_text)
 			a = twentyfive();
 			b = twentyfive();
 
-			while (b == a) { b = twentyfive(); }
+			//while (b == a) { b = twentyfive(); }
 			swap(new_key.at(a), new_key.at(b));
 
 			//Decrypt and score message with new key.
