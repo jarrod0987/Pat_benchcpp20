@@ -129,9 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Crypto.ixx" />
-    <ClCompile Include="Patristocrat.ixx" />
     <ClCompile Include="Pat_benchcpp20.cpp" />
+    <ClCompile Include="Pat_module.ixx" />
     <ClCompile Include="Quadragram.cpp" />
     <ClCompile Include="Scoring.cpp" />
   </ItemGroup>

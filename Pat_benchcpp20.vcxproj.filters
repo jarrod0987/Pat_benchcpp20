@@ -21,17 +21,14 @@
     <ClCompile Include="Pat_benchcpp20.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Patristocrat.ixx">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Crypto.ixx">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Quadragram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scoring.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pat_module.ixx">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

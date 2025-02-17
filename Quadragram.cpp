@@ -1,12 +1,17 @@
 #include "Quadragram.h"
 #include <fstream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
 
+//Initializes the quadragram scoring table with values calculated from the corpus file. 
 void Quadragram::build_table()
 {
 	//Load the corpus.
 	string corpus = read_file("corpus.txt");
 
-	//Process the quadragrams.
+	//Counts the  frequency of each quadragram.
 	double count = 0.0;
 	for (int i = 0; i < corpus.size()-4; i++)
 	{
@@ -18,7 +23,7 @@ void Quadragram::build_table()
 		count += 1.0;
 	}
 
-	//Convert values in table
+	//Converts the frequencys to a more suitable number.
 	auto convert = [&](double& d) 
 		{ 
 			if (d == 0.0) { return -24.0; }
@@ -33,15 +38,14 @@ void Quadragram::build_table()
 			{
 				for (int z = 0; z < 26; z++)
 				{
-					table.at(w).at(x).at(y).at(z) = convert(table.at(w).at(x).at(y).at(z));
-					//if (this->table[w][x][y][z] == 0) this->table[w][x][y][z] = -24.0;
-					//else { this->table[w][x][y][z] = log((double)this->table[w][x][y][z] / (double)quad_count); }
+					table[w][x][y][z] = convert(table[w][x][y][z]);
 				}
 			}
 		}
 	}
 }
 
+//Returns score of a specific quadragram from table.
 double Quadragram::get_table_value(string quad)
 {
 	if (quad.size() != 4) { return 9999.9999; }
@@ -54,6 +58,7 @@ double Quadragram::get_table_value(string quad)
 	return table.at(a).at(b).at(c).at(d);
 }
 
+//Scores as entire string of characters.
 double Quadragram::score(string& s)
 {
 	double score = 0.0;
@@ -61,6 +66,22 @@ double Quadragram::score(string& s)
 	{ 
 		string temp = s.substr(i, 4);
 		score += get_table_value(temp);
+	}
+	return score;
+}
+
+//Returns score of a specific quadragram converted to numbers 0-25. Improves performance.
+double Quadragram::score_nums(array<int, 100>& nums, int length)
+{
+	double score = 0.0;
+	for (int i = 0; i < length - 4; i++)
+	{
+		int a = nums[i];
+		int b = nums[i+1];
+		int c = nums[i+2];
+		int d = nums[i+3];
+
+		score += table[a][b][c][d];
 	}
 	return score;
 }

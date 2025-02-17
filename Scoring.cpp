@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 
+//Reads lines of text from a .txt file.
 string Scoring::read_file(string file_name)
 {
     string s, current_line;
@@ -19,6 +20,7 @@ string Scoring::read_file(string file_name)
     return s;
 }
 
+//Writes lines of text to a .txt file.
 void Scoring::write_file(string& s, string file_name)
 {
     ofstream out_file;
