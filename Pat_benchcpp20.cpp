@@ -1,16 +1,7 @@
-#include<iostream>
-#include<vector>
-#include<array>
 #include<iomanip>
-#include<algorithm>
 #include "Timer.h"
 
-//import Crypto;
 import Pat_module;
-
-//TO DO:
-//Multi_thread!! HOW TO GET FOR EACH WORKING INSIDE AN OBJECT???
-//Push
 
 //RESULTS: (Accuracy vs Time, Single CPU Thread)
 //74 Seconds for 10 Hill Climb on my basline C++ 20 code. Single Thread
@@ -26,11 +17,13 @@ import Pat_module;
 //8 Climbs Single Thread = 11,390 ms
 //9 Climbs Single Thread = 13,120 ms
 //10 Climbs Single Thread = 14,238 ms
+//100 Climbs Single Thread = 144,419 ms
 
-//7 Climbs par_unseq Policy = 0 ms
-//8 Climbs par_unseq Policy = 0 ms
-//9 Climbs par_unseq Policy = 0 ms
-//10 Climbs par_unseq Policy = 0 ms
+//7 Climbs par_unseq Policy = 1,999 ms (4.97x, 20.1%)
+//8 Climbs par_unseq Policy = 2,018 ms (5.64x, 17.72%)
+//9 Climbs par_unseq Policy = 2,107 ms (6.23x, 16.06%)
+//10 Climbs par_unseq Policy = 2,257 ms (6.3x, 15.85%)
+//100 Climbs par_unseq Policy = 19,746 ms (7.31x, 13.67%)
 
 
 
@@ -50,18 +43,16 @@ int main()
     p.encode();
     
     //Array to hold hill climber outputs for evaluation after.
-    array<array<int, 100>, 10> decrypts{p.encoded_ct};
+    vector<array<int, 100>> decrypts(10, p.encoded_ct);
     
     Timer t; //For timing how long it takes for 10 hill climbs.
     t.start();//Starts timer just before the hill climbs start.
 
-    //Hill Climbs the Patristocrat 10 times.
-    for (int i = 0; i < decrypts.size(); i++) 
-    { 
-        decrypts[i] = p.hill_climb();
-    }
-
-    //for_each(decrypts.begin(), decrypts.end(), p.hill_climb());
+    //Hill Climbs the Patristocrats on a single thread.
+    //for (auto& x : decrypts) { x = p.hill_climb(x, p.ct_length); }
+    
+    //Hill Climbs the Patristocrats on multiple-threads.
+    p.batch_climb_CPU(decrypts);
     
     t.stop('m');//Stops timer after climbs all finish.
 

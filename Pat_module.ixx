@@ -9,6 +9,7 @@
 #include <utility>
 #include<windows.h>
 #include <fstream>
+#include <execution>
 
 #include "Scoring.h"
 #include "Quadragram.h"
@@ -52,7 +53,7 @@ public:
 	}
 
 	//Hill climbs the encoded cipher text to find the plain text.
-	array<int, 100> hill_climb()
+	array<int, 100> hill_climb(array<int, 100>& encodedxx, int len)
 	{
 		array<int, 100> best_decrypt{ 0 }, current_decrypt{ 0 };
 		array<int, 26> best_key{ 0 };
@@ -93,8 +94,8 @@ public:
 				swap(new_key.at(a), new_key.at(b));
 
 				//Decrypt and score message with new key.
-				current_decrypt = decrypt_nums(encoded_ct, ct_length, new_key);
-				current_score = q->score_nums(current_decrypt, ct_length);
+				current_decrypt = decrypt_nums(encodedxx, len, new_key);
+				current_score = q->score_nums(current_decrypt, len);
 
 				//Update scoring data.
 				if (current_score > best_score)
@@ -116,8 +117,16 @@ public:
 			}
 			outer_count++;
 		}
-
 		return best_decrypt;
+	}
+
+	//Hill climbs a batch of patristocrats concurrently on CPU.
+	void batch_climb_CPU(vector<array<int, 100>>& pats)
+	{
+		//This Lambda expression is a needed wrapper to make for_each work.
+		auto lam = [&](array<int, 100>& a) { a = hill_climb(a, ct_length); };
+
+		for_each(execution::par_unseq, pats.begin(), pats.end(), lam);
 	}
 };
 
