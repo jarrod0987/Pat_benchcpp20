@@ -71,7 +71,7 @@ double Quadragram::score(string& s)
 }
 
 //Returns score of a specific quadragram converted to numbers 0-25. Improves performance.
-double Quadragram::score_nums(array<int, 100>& nums, int length)
+double Quadragram::score_nums(array<int, 120>& nums, int length)
 {
 	double score = 0.0;
 	for (int i = 0; i < length - 4; i++)

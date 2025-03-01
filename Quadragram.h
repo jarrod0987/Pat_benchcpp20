@@ -12,6 +12,6 @@ public:
 	Quadragram() { build_table(); }
 	double get_table_value(string quad);
 	double score(string& s);
-	double score_nums(array<int, 100>& nums, int length);
+	double score_nums(array<int, 120>& nums, int length);
 	
 };
